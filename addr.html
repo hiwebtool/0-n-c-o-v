@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="./main.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-136150577-4"></script>
 	<script>
@@ -23,7 +24,10 @@
 	</div>
 	<div class="wrap">
 		<div class="content">
-			<h2>주소로 판매처 검색하기</h2>
+			<span style="float: right;margin-top: 20px;"><a id="kakao-link-btn" href="javascript:;" style="font-size: 14px;background-color: #eee;padding: 10px;border-radius: 10px;color: #000;">
+        <img style="width: 24px;vertical-align: middle;" src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"/> <span>카카오톡 공유하기</span>
+        </a></span>
+			<h2>주소로 검색하기</h2>
 			<div class="search">
 				<input type="text" name="search" id="address" style="display: inline;" placeholder="검색어를 입력해주세요" onkeypress="if (event.keyCode == 13) {_Search();}">
 				<span class="xi-search" id="searchicon" onclick="_Search()"></span>
@@ -46,13 +50,14 @@
 			var addrs=decodeURIComponent(location.search.split("?addr=")[1].split("&")[0]);
 			document.getElementById('s_addr').innerText=addrs;
 			document.getElementById('address').value=addrs;
+			Kakao.init("5884b0444b8170b916743d782e5f930e"),Kakao.Link.createDefaultButton({container:"#kakao-link-btn",objectType:"feed",content:{title:"공적 마스크 현황",description:"#코로나 #공적마스크 #마스크현황 #마스크판매처",imageUrl:"https://0mask.ncov-korea.com/img/mask.png",link:{mobileWebUrl:"https://0mask.ncov-korea.com/",webUrl:"https://0mask.ncov-korea.com/"}},buttons:[{title:"웹으로 보기",link:{mobileWebUrl:"https://0mask.ncov-korea.com/",webUrl:"https://0mask.ncov-korea.com/"}}]});
 			var xhr =new XMLHttpRequest;
 		    xhr.open("GET" ,'https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByAddr/json?address='+ addrs);
 		    xhr.onreadystatechange = function() {
 		        if(xhr.readyState == 4){
 		            if(xhr.status == 200){
 			            json=JSON.parse(xhr.responseText);
-			            document.getElementById('result').innerHTML="<p>총 "+json.count+" 개 검색결과</p>";
+			            document.getElementById('result').innerHTML="<p>총 검색결과 "+json.count+" 개</p>";
 			            var t='<table id="sortable" cellpadding="10" style="margin:auto"><thead><tr><th>주소</th><th id="cl">재고 상태</th><th>업데이트</th><th>입고시간</th><th>유형</th></tr></thead><tbody>';
 			            for(var i=0;i<json.stores.length;i++){
 			            	if(json.stores[i].remain_stat!=null){

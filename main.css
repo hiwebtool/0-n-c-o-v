@@ -16,6 +16,7 @@ html,body{font-family: 'BRRA_R';margin: 0;padding: 0;height: 100%;background-col
     overflow: auto;
     border: 1px solid #e0e5ee;
     border-radius: 5px;
+    margin-bottom: 20px;
 }
 .wrap {
     position: relative;
