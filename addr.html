@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<title>공적 마스크 현황</title>
+	<link rel="stylesheet" href="./main.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+</head>
+<body>
+	<div class="header">
+		<a href="./index.html"><h1>공적 마스크 현황</h1></a>
+	</div>
+	<div class="wrap">
+		<div class="content">
+			<h2>주소로 판매처 검색하기</h2>
+			<div class="search">
+				<input type="text" name="search" id="address" style="display: inline;" placeholder="검색어를 입력해주세요" onkeypress="if (event.keyCode == 13) {_Search();}">
+				<span class="xi-search" id="searchicon" onclick="_Search()"></span>
+			</div>
+			<br>
+			<h2>검색 결과 : <span id="s_addr"></span></h2>
+			<p>* 10분 정도의 업데이트 지연이 있을수있습니다. (검색 가능시간대 08시~23시)</p>
+			<p>* 데이터 출처 : 심평원‧정보화진흥원(공공데이터포털)</p>
+			<div id="loading">
+				<span class="xi-spinner-3 xi-3x xi-spin" style="vertical-align: middle;margin-right: 20px;"></span><span>잠시만 기다려주세요 . . .</span>
+			</div>
+			<div id="result"></div>
+		</div>
+	</div>
+	<script src="./AutoComplete.min.js"></script>
+	<script src="./jquery-3.2.1.min.js"></script>
+	<script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+	<script>
+		(function () {
+			var addrs=decodeURIComponent(location.search.split("?addr=")[1].split("&")[0]);
+			document.getElementById('s_addr').innerText=addrs;
+			document.getElementById('address').value=addrs;
+			var xhr =new XMLHttpRequest;
+		    xhr.open("GET" ,'https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByAddr/json?address='+ addrs);
+		    xhr.onreadystatechange = function() {
+		        if(xhr.readyState == 4){
+		            if(xhr.status == 200){
+			            json=JSON.parse(xhr.responseText);
+			            document.getElementById('result').innerHTML="<p>총 "+json.count+" 개 검색결과</p>";
+			            var t='<table id="sortable" cellpadding="10" style="margin:auto"><thead><tr><th>주소</th><th id="cl">재고 상태</th><th>업데이트</th><th>입고시간</th><th>유형</th></tr></thead><tbody>';
+			            for(var i=0;i<json.stores.length;i++){
+			            	if(json.stores[i].remain_stat!=null){
+			            		t+='<tr><td title="지도열기 (카카오 맵)" style="cursor:pointer;" onclick="openMap(\''+json.stores[i].addr+'\')"><i class="xi-maker-drop"></i>'+itemaddr(json.stores[i].addr,addrs)+'</td><td>'+leftitem(json.stores[i].remain_stat)+'</td><td>'+formatDate(json.stores[i].created_at)+'</td><td>'+formatDate(json.stores[i].stock_at)+'</td><td>'+itemtype(json.stores[i].type)+'</td></tr>';
+			            	}
+			            }
+			            t+="</tbody></table>";
+			            document.getElementById('result').innerHTML+=t;
+			            $('#sortable').DataTable( {
+					        "order": [[ 1, "asc" ]],
+					        "bPaginate": false,
+						    "bLengthChange": false,
+						    "bFilter": true,
+						    "bInfo": false,
+						    "bAutoWidth": false,
+						    "language": {
+							    "search": "추가 검색:",
+							    "searchPlaceholder": "읍면동을 입력해보세요"
+							}
+					    });
+					    document.getElementById('loading').style.display="none";
+			        }else{
+			            alert("데이터를 불러오는데 실패했습니다.. 공공데이터포털에 이상이 있는 것 같습니다.");
+			        }
+		        }
+		    }
+		    xhr.send();
+			var list = JSON.parse('["서울특별시 종로구","서울특별시 중구","서울특별시 용산구","서울특별시 성동구","서울특별시 광진구","서울특별시 동대문구","서울특별시 중랑구","서울특별시 성북구","서울특별시 강북구","서울특별시 도봉구","서울특별시 노원구","서울특별시 은평구","서울특별시 서대문구","서울특별시 마포구","서울특별시 양천구","서울특별시 강서구","서울특별시 구로구","서울특별시 금천구","서울특별시 영등포구","서울특별시 동작구","서울특별시 관악구","서울특별시 서초구","서울특별시 강남구","서울특별시 송파구","서울특별시 강동구",			 "울산광역시 중구","울산광역시 남구","울산광역시 동구","울산광역시 북구","울산광역시 울주군","경기도 가평군","경기도 고양시","경기도 과천시","경기도 광명시","경기도 광주시","경기도 구리시","경기도 군포시","경기도 김포시","경기도 남양주시","경기도 동두천시","경기도 부천시","경기도 성남시","경기도 수원시","경기도 시흥시","경기도 안산시","경기도 안성시","경기도 안양시","경기도 양주시","경기도 양평군","경기도 여주시","경기도 연천군","경기도 오산시","경기도 용인시","경기도 의왕시","경기도 의정부시","경기도 이천시","경기도 파주시","경기도 평택시","경기도 포천시","경기도 하남시","경기도 화성시","강원도 원주시","강원도 춘천시","강원도 강릉시","강원도 동해시","강원도 속초시","강원도 삼척시","강원도 홍천군","강원도 태백시","강원도 철원군","강원도 횡성군","강원도 평창군","강원도 영월군","강원도 정선군","강원도 인제군","강원도 고성군","강원도 양양군","강원도 화천군","강원도 양구군", "인천광역시 중구","인천광역시 동구","인천광역시 남구","인천광역시 연수구","인천광역시 남동구","인천광역시 부평구","인천광역시 계양구","인천광역시 서구","인천광역시 강화군","인천광역시 옹진군","대구광역시 중구","대구광역시 동구","대구광역시 서구","대구광역시 남구","대구광역시 북구","대구광역시 수성구","대구광역시 달서구","대구광역시 달성군", "부산광역시 중구","부산광역시 서구","부산광역시 동구","부산광역시 영도구","부산광역시 부산진구","부산광역시 동래구","부산광역시 남구","부산광역시 북구","부산광역시 강서구","부산광역시 해운대구","부산광역시 사하구","부산광역시 금정구","부산광역시 연제구","부산광역시 수영구","부산광역시 사상구","부산광역시 기장군", "광주광역시 동구","광주광역시 서구","광주광역시 남구","광주광역시 북구","광주광역시 광산구","대전광역시 동구","대전광역시 중구","대전광역시 서구","대전광역시 유성구","대전광역시 대덕구", "충청북도 청주시","충청북도 충주시","충청북도 제천시","충청북도 보은군","충청북도 옥천군","충청북도 영동군","충청북도 증평군","충청북도 진천군","충청북도 괴산군","충청북도 음성군","충청북도 단양군","충청남도 천안시","충청남도 공주시","충청남도 보령시","충청남도 아산시","충청남도 서산시","충청남도 논산시","충청남도 계룡시","충청남도 당진시","충청남도 금산군","충청남도 부여군","충청남도 서천군","충청남도 청양군","충청남도 홍성군","충청남도 예산군","충청남도 태안군","경상북도 포항시","경상북도 경주시","경상북도 김천시","경상북도 안동시","경상북도 구미시","경상북도 영주시","경상북도 영천시","경상북도 상주시","경상북도 문경시","경상북도 경산시","경상북도 군위군","경상북도 의성군","경상북도 청송군","경상북도 영양군","경상북도 영덕군","경상북도 청도군","경상북도 고령군","경상북도 성주군","경상북도 칠곡군","경상북도 예천군","경상북도 봉화군","경상북도 울진군","경상북도 울릉군","경상남도 창원시","경상남도 김해시","경상남도 진주시","경상남도 양산시","경상남도 거제시","경상남도 통영시","경상남도 사천시","경상남도 밀양시","경상남도 함안군","경상남도 거창군","경상남도 창녕군","경상남도 고성군","경상남도 하동군","경상남도 합천군","경상남도 남해군","경상남도 함양군","경상남도 산청군","경상남도 의령군","전라북도 전주시","전라북도 익산시","전라북도 군산시","전라북도 정읍시","전라북도 완주군","전라북도 김제시","전라북도 남원시","전라북도 고창군","전라북도 부안군","전라북도 임실군","전라북도 순창군","전라북도 진안군","전라북도 장수군","전라북도 무주군","전라남도 여수시","전라남도 순천시","전라남도 목포시","전라남도 광양시","전라남도 나주시","전라남도 무안군","전라남도 해남군","전라남도 고흥군","전라남도 화순군","전라남도 영암군","전라남도 영광군","전라남도 완도군","전라남도 담양군","전라남도 장성군","전라남도 보성군","전라남도 신안군","전라남도 장흥군","전라남도 강진군","전라남도 함평군","전라남도 진도군","전라남도 곡성군","전라남도 구례군","제주특별자치도 제주시","제주특별자치도 서귀포시"]');
+			new AutoComplete(document.querySelector('#address'), list);
+		})();
+		function _click(addr){
+			window.location.href="./"+addr+"/";
+		}
+		function leftitem(item){
+			switch(item){
+				case "plenty":
+					return "<span><span style='font-size: 0;'>1</span><span style='color:#8BC34A'>■</span> 100개+</span>";
+					break;
+				case "some":
+					return "<span><span style='font-size: 0;'>2</span><span style='color:#ffeb3b'>■</span> 30개+</span>";
+					break;
+				case "few":
+					return "<span><span style='font-size: 0;'>3</span><span style='color:#f44336'>■</span> 1개+</span>";
+					break;
+				case "empty":
+					return "<span><span style='font-size: 0;'>4</span><span style='color:#9e9e9e'>■</span> 1개 미만</span>";
+					break;
+				default:
+					break;
+			}
+		}
+		function itemtype(item){
+			switch(item){
+				case "01":
+					return "약국";
+					break;
+				case "02":
+					return "우체국";
+					break;
+				case "03":
+					return "농협";
+					break;
+				default:
+					break;
+			}
+		}
+		function itemaddr(addr,addrs){
+			return addr.split(addrs).join("");
+		}
+		function openMap(q){
+			window.open("https://map.kakao.com/?map_type=TYPE_MAP&q="+encodeURIComponent(q),"_blank");
+		}
+		function formatDate(date) {
+		    var d = new Date(date),
+		    month = '' + (d.getMonth() + 1),
+		    day = '' + d.getDate(),
+		    year = d.getFullYear(),
+		    h=d.getHours(),
+		    m=d.getMinutes();
+		    if (month.length < 2) 
+		        month = '0' + month;
+		    if (day.length < 2) 
+		        day = '0' + day;
+		    return [month, day].join('/')+" "+h+"시"+m+"분";
+		}
+	</script>
+</body>
+</html>
