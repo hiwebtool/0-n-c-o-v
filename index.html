@@ -49,42 +49,15 @@
 			<p>* 마스크 현황 정보는 성인용 마스크를 대상으로 합니다.</p>
 			<br>
 			<h2>마스크 구매는 언제?</h2>
-			<p>예) 199<span style="color: #F44336;">1</span> 년생 => <span style="color: #F44336;">1</span></p>
-			<table>
-				<tbody>
-					<tr>
-						<td>월요일</td>
-						<td><span style="color: #F44336;">1</span>, 6</td>
-					</tr>
-					<tr>
-						<td>화요일</td>
-						<td>2, 7</td>
-					</tr>
-					<tr>
-						<td>수요일</td>
-						<td>3, 8</td>
-					</tr>
-					<tr>
-						<td>목요일</td>
-						<td>4, 9</td>
-					</tr>
-					<tr>
-						<td>금요일</td>
-						<td>5, 0</td>
-					</tr>
-					<tr>
-						<td>주말</td>
-						<td>주중 미구매자</td>
-					</tr>
-				</tbody>
-			</table>
+			<p>예) 199<span style="color: #F44336;">1</span> 년생 => <span style="color: #F44336;">1</span> (출생년도 끝자리)</p>
+			<table cellpadding="5"><tbody><tr><td>월요일</td><td><span style="color: #F44336;">1</span>, 6</td></tr><tr><td>화요일</td><td>2, 7</td></tr><tr><td>수요일</td><td>3, 8</td></tr><tr><td>목요일</td><td>4, 9</td></tr><tr><td>금요일</td><td>5, 0</td></tr><tr><td>주말</td><td>주중 미구매자</td></tr></tbody></table>
 			<br>
 			<h2>가격은?</h2>
-			<p>개당 1,500원 입니다.</p>
+			<p>개당 1,500원 입니다. (1주일에 2개까지 구매가능)</p>
 			<br>
 			<h2>대리 구매 대상은?</h2>
 			<p>장애인, 장기요양급여 수급자, <b>2010년 포함</b> 그 이후 출생한 어린이, <b>1940년 포함</b> 그 이전 출생한 어르신</p>
-			<p>* 영유아는 호흡에 장애를 줄 수 있어 마스크 미착용 권고 </p>
+			<p>* 영유아는 호흡에 장애를 줄 수 있어 마스크 미착용 권고</p>
 			<br>
 			<h2>필요 서류는?</h2>
 			<p>* 본인 신분증</p>
@@ -121,7 +94,7 @@
 			for (var i = 0; i < list.length; i++) {
 				var a=list[i].indexOf(document.getElementById('address').value)
 				if(a!=-1){
-					_click(list[i])
+					_click(list[i]);
 				}
 			}
 		}
