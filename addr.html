@@ -50,7 +50,7 @@
 			var addrs=decodeURIComponent(location.search.split("?addr=")[1].split("&")[0]);
 			document.getElementById('s_addr').innerText=addrs;
 			document.getElementById('address').value=addrs;
-			Kakao.init("5884b0444b8170b916743d782e5f930e"),Kakao.Link.createDefaultButton({container:"#kakao-link-btn",objectType:"feed",content:{title:"공적 마스크 현황",description:"#코로나 #공적마스크 #마스크현황 #마스크판매처",imageUrl:"https://0mask.ncov-korea.com/img/mask.png",link:{mobileWebUrl:"https://0mask.ncov-korea.com/",webUrl:"https://0mask.ncov-korea.com/"}},buttons:[{title:"웹으로 보기",link:{mobileWebUrl:"https://0mask.ncov-korea.com/",webUrl:"https://0mask.ncov-korea.com/"}}]});
+			Kakao.init("5884b0444b8170b916743d782e5f930e"),Kakao.Link.createDefaultButton({container:"#kakao-link-btn",objectType:"feed",content:{title:addrs+" 공적 마스크 현황",description:"#코로나 #공적마스크 #마스크현황 #마스크판매처",imageUrl:"https://0mask.ncov-korea.com/img/mask.png",link:{mobileWebUrl:"https://0mask.ncov-korea.com/addr.html?addr="+location.search,webUrl:"https://0mask.ncov-korea.com/addr.html?addr="+location.search}},buttons:[{title:"웹으로 보기",link:{mobileWebUrl:"https://0mask.ncov-korea.com/addr.html?addr="+location.search,webUrl:"https://0mask.ncov-korea.com/addr.html?addr="+location.search}}]});
 			var xhr =new XMLHttpRequest;
 		    xhr.open("GET" ,'https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByAddr/json?address='+ addrs);
 		    xhr.onreadystatechange = function() {
