@@ -1,0 +1,27 @@
+{
+  "name": "공적마스크 검색",
+  "short_name": "공적마스크 검색",
+  "icons": [{
+    "src": "/img/128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    }, {
+      "src": "/img/144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }, {
+      "src": "/img/152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    }, {
+      "src": "/img/192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }, {
+      "src": "/img/256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }],
+  "start_url": "/",
+  "display": "standalone"
+}
