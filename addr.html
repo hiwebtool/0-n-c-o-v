@@ -157,7 +157,7 @@
 		        month = '0' + month;
 		    if (day.length < 2) 
 		        day = '0' + day;
-		    return [month, day].join('/')+" "+h+"시"+m+"분";
+		    return "<span style='font-size: 0;'>"+d.getTime()+"</span>"+[month, day].join('/')+" "+h+"시"+m+"분";
 		}
 	</script>
 </body>
