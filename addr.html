@@ -71,16 +71,18 @@
 		            if(xhr.status == 200){
 			            json=JSON.parse(xhr.responseText);
 			            document.getElementById('result').innerHTML="<p>총 검색결과 "+json.count+" 개</p>";
-			            var t='<table id="sortable" cellpadding="10" style="margin:auto"><thead><tr><th>주소</th><th id="cl">재고 상태</th><th>업데이트</th><th>입고시간</th><th>유형</th></tr></thead><tbody>';
+			            var t='<table id="sortable" cellpadding="10" style="margin:auto"><thead><tr><th>이름</th><th>주소</th><th id="cl">재고</th><th>입고시간</th></tr></thead><tbody>';
+			            //<th>업데이트</th><th>유형</th>
 			            for(var i=0;i<json.stores.length;i++){
 			            	if(json.stores[i].remain_stat!=null){
-			            		t+='<tr><td title="지도열기 (카카오 맵)" style="cursor:pointer;" onclick="openMap(\''+json.stores[i].addr+'\')"><i class="xi-maker-drop"></i>'+itemaddr(json.stores[i].addr,addrs)+'</td><td>'+leftitem(json.stores[i].remain_stat)+'</td><td>'+formatDate(json.stores[i].created_at)+'</td><td>'+formatDate(json.stores[i].stock_at)+'</td><td>'+itemtype(json.stores[i].type)+'</td></tr>';
+			            		t+='<tr><td>'+json.stores[i].name+'</td><td title="지도열기 (카카오 맵)" style="cursor:pointer;" onclick="openMap(\''+json.stores[i].addr+'\',\''+json.stores[i].name+'\')"><i class="xi-maker-drop"></i>'+itemaddr(json.stores[i].addr,addrs)+'</td><td>'+leftitem(json.stores[i].remain_stat)+'</td><td>'+formatDate(json.stores[i].stock_at)+'</td></tr>';
+			            		//<td>'+formatDate(json.stores[i].created_at)+'</td><td>'+itemtype(json.stores[i].type)+'</td>
 			            	}
 			            }
 			            t+="</tbody></table>";
 			            document.getElementById('result').innerHTML+=t;
 			            $('#sortable').DataTable( {
-					        "order": [[ 1, "desc" ]],
+					        "order": [[ 2, "desc" ]],
 					        "bPaginate": false,
 						    "bLengthChange": false,
 						    "bFilter": true,
@@ -111,16 +113,16 @@
 		function leftitem(item){
 			switch(item){
 				case "plenty":
-					return "<span><span style='font-size: 0;'>4</span><span style='color:#8BC34A'>■</span> 100개+</span>";
+					return "<span><span style='font-size: 0;'>4</span><span style='color:#8BC34A'>■</span> 100+</span>";
 					break;
 				case "some":
-					return "<span><span style='font-size: 0;'>3</span><span style='color:#ffeb3b'>■</span> 30개+</span>";
+					return "<span><span style='font-size: 0;'>3</span><span style='color:#ffeb3b'>■</span> 30+</span>";
 					break;
 				case "few":
-					return "<span><span style='font-size: 0;'>2</span><span style='color:#f44336'>■</span> 1개+</span>";
+					return "<span><span style='font-size: 0;'>2</span><span style='color:#f44336'>■</span> 1+</span>";
 					break;
 				case "empty":
-					return "<span><span style='font-size: 0;'>1</span><span style='color:#9e9e9e'>■</span> 1개 미만</span>";
+					return "<span><span style='font-size: 0;'>1</span><span style='color:#9e9e9e'>■</span> -</span>";
 					break;
 				default:
 					break;
@@ -141,11 +143,19 @@
 					break;
 			}
 		}
+		function _Search(){
+			for (var i = 0; i < list.length; i++) {
+				var a=list[i].indexOf(document.getElementById('address').value)
+				if(a!=-1){
+					_click(list[i]);
+				}
+			}
+		}
 		function itemaddr(addr,addrs){
 			return addr.split(addrs).join("");
 		}
-		function openMap(q){
-			window.open("https://map.kakao.com/?map_type=TYPE_MAP&q="+encodeURIComponent(q.split("(")[0]),"_blank");
+		function openMap(q,r){
+			window.open("https://map.kakao.com/?map_type=TYPE_MAP&q="+encodeURIComponent(q.split("(")[0]+r),"_blank");
 		}
 		function formatDate(date) {
 		    var d = new Date(date),
