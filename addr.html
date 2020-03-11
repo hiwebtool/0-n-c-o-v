@@ -23,6 +23,22 @@
 
 	  gtag('config', 'UA-136150577-4');
 	</script>
+	<style>
+		#alertMsg{width: 300px;min-height: 150px;}
+#alertMsg .xbtn{float: right;color: #fff;cursor: pointer;padding: 5px 10px;background-color: #E53935;}
+#alertMsg{
+    position: fixed;background-color: #fff;border: 3px solid #607D8B;border-radius: 10px;padding: 10px;
+}
+#alertMsg h2{margin: 2px 10px;}
+#alertMsg span{color:#000;}
+#alertMsg .d{
+	color: #F44336;
+	font-weight: bold;
+	margin: 20px 0;
+}
+#info_{padding: 0 20px;}
+#info_ p{margin: 10px 0;}
+	</style>
 </head>
 <body>
 	<div class="header">
@@ -43,6 +59,7 @@
 			<p>* 5 ~ 10분 정도의 업데이트 지연이 있을수있습니다. (검색 가능시간대 08시 ~ 23시)</p>
 			<p>* 데이터 출처 : 심평원‧정보화진흥원(공공데이터포털)</p>
 			<p><span style="color: #fff;background-color: #3F51B5;padding: 2px 5px;">Tip.</span> 입고시간을 잘 활용해보세요 표의 상단 클릭시 정렬을 바꿀수있습니다.</p>
+			<p><span style="color: #fff;background-color: #3F51B5;padding: 2px 5px;">Tip.</span> 이름 클릭시 더 자세한 정보를 알수있습니다 !</p>
 			<br>
 			<div id="loading">
 				<span class="xi-spinner-3 xi-3x xi-spin" style="vertical-align: middle;margin-right: 20px;"></span><span>잠시만 기다려주세요 . . .</span>
@@ -50,6 +67,7 @@
 			<div id="result"></div>
 		</div>
 	</div>
+	<div id="alertMsg" style="display: none;"><span class="xbtn" title="닫기" onclick="document.getElementById('alertMsg').style.display='none';">X</span><h2 id="title_"></h2><div id="info_"></div></div>
 	<script src="./autocomplete.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
@@ -65,7 +83,7 @@
 			document.getElementById('address').value=addrs;
 			Kakao.init("5884b0444b8170b916743d782e5f930e"),Kakao.Link.createDefaultButton({container:"#kakao-link-btn",objectType:"feed",content:{title:addrs+" 공적 마스크 현황",description:"#코로나 #공적마스크 #마스크현황 #마스크판매처",imageUrl:"https://0mask.ncov-korea.com/img/mask.png",link:{mobileWebUrl:"https://0mask.ncov-korea.com/addr.html?addr="+addrs,webUrl:"https://0mask.ncov-korea.com/addr.html?addr="+addrs}},buttons:[{title:"웹으로 보기",link:{mobileWebUrl:"https://0mask.ncov-korea.com/addr.html?addr="+addrs,webUrl:"https://0mask.ncov-korea.com/addr.html?addr="+addrs}}]});
 			var xhr =new XMLHttpRequest;
-		    xhr.open("GET" ,'https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByAddr/json?address='+ location.search.split("?addr=")[1].split("&")[0]);
+		    xhr.open("GET" ,'res.json'/*'https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByAddr/json?address='+ location.search.split("?addr=")[1].split("&")[0]*/);
 		    xhr.onreadystatechange = function() {
 		        if(xhr.readyState == 4){
 		            if(xhr.status == 200){
@@ -75,7 +93,7 @@
 			            //<th>업데이트</th><th>유형</th>
 			            for(var i=0;i<json.stores.length;i++){
 			            	if(json.stores[i].remain_stat!=null){
-			            		t+='<tr><td>'+json.stores[i].name+'</td><td title="지도열기 (카카오 맵)" style="cursor:pointer;" onclick="openMap(\''+json.stores[i].addr+'\',\''+json.stores[i].name+'\')"><i class="xi-maker-drop"></i>'+itemaddr(json.stores[i].addr,addrs)+'</td><td>'+leftitem(json.stores[i].remain_stat)+'</td><td>'+formatDate(json.stores[i].stock_at)+'</td></tr>';
+			            		t+='<tr><td onclick="ShowData('+i+')" style="cursor:pointer;">'+json.stores[i].name+'</td><td title="지도열기 (카카오 맵)" style="cursor:pointer;" onclick="openMap(\''+json.stores[i].addr+'\',\''+json.stores[i].name+'\')"><i class="xi-maker-drop"></i>'+itemaddr(json.stores[i].addr,addrs)+'</td><td>'+leftitem(json.stores[i].remain_stat)+'</td><td>'+formatDate(json.stores[i].stock_at)+'</td></tr>';
 			            		//<td>'+formatDate(json.stores[i].created_at)+'</td><td>'+itemtype(json.stores[i].type)+'</td>
 			            	}
 			            }
@@ -169,6 +187,14 @@
 		    if (day.length < 2) 
 		        day = '0' + day;
 		    return "<span style='font-size: 0;'>"+d.getTime()+"</span>"+[month, day].join('/')+" "+h+"시"+m+"분";
+		}
+		function ShowData(i){
+			document.getElementById('alertMsg').style.display='';
+		    document.getElementById('alertMsg').style.left=(window.innerWidth-300)/2+"px";
+		    document.getElementById('alertMsg').style.top=(window.innerHeight-150)/2+"px";
+			document.getElementById('title_').innerText=json.stores[i].name;
+			//<td><i class="xi-maker-drop"></i>'
+			document.getElementById('info_').innerHTML="<p><i class='xi-maker-drop' title='지도열기 (카카오 맵)' style='cursor:pointer;' onclick=\"openMap(\'"+json.stores[i].addr+'\',\''+json.stores[i].name+"\')\"></i>"+json.stores[i].addr+"</p>"+"<p>최근 업데이트 : "+formatDate(json.stores[i].created_at)+"</p>"+"<p>남은 수량 : "+leftitem(json.stores[i].remain_stat)+"</p>"+"<p>입고 시간 : "+formatDate(json.stores[i].stock_at)+"</p>";
 		}
 	</script>
 </body>
