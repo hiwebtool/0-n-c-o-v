@@ -99,8 +99,8 @@
 			            }
 			            t+="</tbody></table>";
 			            document.getElementById('result').innerHTML+=t;
-			            $('#sortable').DataTable( {
-					        "order": [[ 2, "desc" ]],
+			            var table = $('#sortable').DataTable( {
+					        "order": [[ 3, "desc" ]],
 					        "bPaginate": false,
 						    "bLengthChange": false,
 						    "bFilter": true,
@@ -111,6 +111,7 @@
 							    "searchPlaceholder": "읍면동을 입력해보세요"
 							}
 					    });
+					    table.column( '2:visible' ).order( 'desc' ).draw();
 					    document.getElementById('loading').style.display="none";
 			        }else{
 			            alert("데이터를 불러오는데 실패했습니다.. 공공데이터포털에 이상이 있는 것 같습니다.\n새로고침 해보시길바랍니다.");
