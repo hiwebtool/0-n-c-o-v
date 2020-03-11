@@ -93,7 +93,7 @@
 			            //<th>업데이트</th><th>유형</th>
 			            for(var i=0;i<json.stores.length;i++){
 			            	if(json.stores[i].remain_stat!=null){
-			            		t+='<tr><td onclick="ShowData('+i+')" style="cursor:pointer;font-family: \'nanumgothic\';font-size: 15px;line-height: 1.5em;padding: 8px 0;">'+json.stores[i].name+'</td><td title="지도열기 (카카오 맵)" style="cursor:pointer;font-family: \'nanumgothic\';font-size: 15px;line-height: 1.5em;" onclick="openMap(\''+json.stores[i].addr+'\',\''+json.stores[i].name+'\')"><i class="xi-maker-drop"></i>'+itemaddr(json.stores[i].addr,addrs)+'</td><td>'+leftitem(json.stores[i].remain_stat)+'</td><td>'+formatDate(json.stores[i].stock_at)+'</td></tr>';
+			            		t+='<tr><td onclick="ShowData('+i+')" style="cursor:pointer;font-family: \'nanumgothic\';font-size: 15px;line-height: 1.5em;padding: 8px 2px;">'+json.stores[i].name+'</td><td title="지도열기 (카카오 맵)" style="cursor:pointer;font-family: \'nanumgothic\';font-size: 15px;line-height: 1.5em;" onclick="openMap(\''+json.stores[i].addr+'\',\''+json.stores[i].name+'\')"><i class="xi-maker-drop"></i>'+itemaddr(json.stores[i].addr,addrs)+'</td><td>'+leftitem(json.stores[i].remain_stat)+'</td><td>'+formatDate(json.stores[i].stock_at)+'</td></tr>';
 			            		//<td>'+formatDate(json.stores[i].created_at)+'</td><td>'+itemtype(json.stores[i].type)+'</td>
 			            	}
 			            }
