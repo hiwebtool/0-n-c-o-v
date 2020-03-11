@@ -80,7 +80,7 @@
 			            t+="</tbody></table>";
 			            document.getElementById('result').innerHTML+=t;
 			            $('#sortable').DataTable( {
-					        "order": [[ 1, "asc" ]],
+					        "order": [[ 1, "desc" ]],
 					        "bPaginate": false,
 						    "bLengthChange": false,
 						    "bFilter": true,
@@ -111,16 +111,16 @@
 		function leftitem(item){
 			switch(item){
 				case "plenty":
-					return "<span><span style='font-size: 0;'>1</span><span style='color:#8BC34A'>■</span> 100개+</span>";
+					return "<span><span style='font-size: 0;'>4</span><span style='color:#8BC34A'>■</span> 100개+</span>";
 					break;
 				case "some":
-					return "<span><span style='font-size: 0;'>2</span><span style='color:#ffeb3b'>■</span> 30개+</span>";
+					return "<span><span style='font-size: 0;'>3</span><span style='color:#ffeb3b'>■</span> 30개+</span>";
 					break;
 				case "few":
-					return "<span><span style='font-size: 0;'>3</span><span style='color:#f44336'>■</span> 1개+</span>";
+					return "<span><span style='font-size: 0;'>2</span><span style='color:#f44336'>■</span> 1개+</span>";
 					break;
 				case "empty":
-					return "<span><span style='font-size: 0;'>4</span><span style='color:#9e9e9e'>■</span> 1개 미만</span>";
+					return "<span><span style='font-size: 0;'>1</span><span style='color:#9e9e9e'>■</span> 1개 미만</span>";
 					break;
 				default:
 					break;
