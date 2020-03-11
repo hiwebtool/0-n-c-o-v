@@ -144,7 +144,7 @@
 			return addr.split(addrs).join("");
 		}
 		function openMap(q){
-			window.open("https://map.kakao.com/?map_type=TYPE_MAP&q="+encodeURIComponent(q),"_blank");
+			window.open("https://map.kakao.com/?map_type=TYPE_MAP&q="+encodeURIComponent(q.split("(")[0]),"_blank");
 		}
 		function formatDate(date) {
 		    var d = new Date(date),
