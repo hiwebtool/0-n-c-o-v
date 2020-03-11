@@ -83,7 +83,7 @@
 			document.getElementById('address').value=addrs;
 			Kakao.init("5884b0444b8170b916743d782e5f930e"),Kakao.Link.createDefaultButton({container:"#kakao-link-btn",objectType:"feed",content:{title:addrs+" 공적 마스크 현황",description:"#코로나 #공적마스크 #마스크현황 #마스크판매처",imageUrl:"https://0mask.ncov-korea.com/img/mask.png",link:{mobileWebUrl:"https://0mask.ncov-korea.com/addr.html?addr="+addrs,webUrl:"https://0mask.ncov-korea.com/addr.html?addr="+addrs}},buttons:[{title:"웹으로 보기",link:{mobileWebUrl:"https://0mask.ncov-korea.com/addr.html?addr="+addrs,webUrl:"https://0mask.ncov-korea.com/addr.html?addr="+addrs}}]});
 			var xhr =new XMLHttpRequest;
-		    xhr.open("GET" ,'res.json'/*'https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByAddr/json?address='+ location.search.split("?addr=")[1].split("&")[0]*/);
+		    xhr.open("GET" ,'https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByAddr/json?address='+ location.search.split("?addr=")[1].split("&")[0]);
 		    xhr.onreadystatechange = function() {
 		        if(xhr.readyState == 4){
 		            if(xhr.status == 200){
