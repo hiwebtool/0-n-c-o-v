@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<title>공적 마스크 현황</title>
+	<meta name="description" content="공적 마스크 현황을 보여줍니다.">
+	<meta property="og:url" content="https://0mask.ncov-korea.com/" >
+	<meta property="og:site_name" content="공적 마스크 현황" >
+	<meta property="og:description" content="공적 마스크 현황을 보여줍니다.">
+	<meta property="og:title" content="공적 마스크 현황">
+	<meta property="og:image" content="/img/mask.png"/>
+	<meta property="og:type" content="website"/>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+	<link rel="stylesheet" href="./main.css">
+	<meta name="google-site-verification" content="gGqBF7a0TskSu6qSXgqJhv9QwM_qD1rE10nhCqY2IS0" />
+	<meta name="naver-site-verification" content="d33ac4ca5e37a65d7d58dee57ee7f8b236befe2b"/>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-136150577-4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-136150577-4');
+</script>
+<style>
+	.notice{text-align: center;padding: 5px;margin: 0;background-color: #fff;color: #000;font-size: 16px;font-weight: normal;}
+	.notice a{text-decoration: none;color: #000}
+	.notice table{margin: auto;}
+	.notice th{padding-right: 10px;min-width: 30px;}
+</style>
+	<link rel="manifest" href="./manifest.json"/>
+</head>
+<body>
+	<div class="header">
+		<a href="./index.html"><h1>공적 마스크 현황</h1></a>
+		<div class="notice"><a href="./notice/"><table><tbody><tr><th>알림</th><td>누락되었던 인천 미추홀구, 경기 성남시, 세종시가 수정되었습니다.</td></tr></tbody></table></a></div>
+	</div>
+	<div class="wrap">
+		<div class="content">
+			<h2>주소로 판매처 검색하기</h2>
+			<p>&ensp;예) 서울특별시 종로구</p>
+			<div class="search">
+				<input type="text" name="search" id="address" style="display: inline;" placeholder="검색어를 입력해주세요" onkeypress="if (event.keyCode == 13) {_Search();}">
+				<span class="xi-search" id="searchicon" onclick="_Search()"></span>
+			</div>
+			<br>
+			<h2>이용방법</h2>
+			<ol>
+				<li>지역구를 선택(검색) 합니다.</li>
+				<li>정렬은 기본적으로 재고가 많은순으로 정렬됩니다.</li>
+			</ol>
+			<p>* 10분 정도의 업데이트 지연이 있을수있습니다. (검색 가능시간대 08시~23시)</p>
+			<p>* 데이터 출처 : 심평원‧정보화진흥원(공공데이터포털)</p>
+			<p>* 마스크 현황 정보는 성인용 마스크를 대상으로 합니다.</p>
+			<br>
+			<h2>마스크 구매는 언제?</h2>
+			<p>예) 199<span style="color: #F44336;">1</span> 년생 => <span style="color: #F44336;">1</span> (출생년도 끝자리)</p>
+			<table cellpadding="5"><tbody><tr><td>월요일</td><td><span style="color: #F44336;">1</span>, 6</td></tr><tr><td>화요일</td><td>2, 7</td></tr><tr><td>수요일</td><td>3, 8</td></tr><tr><td>목요일</td><td>4, 9</td></tr><tr><td>금요일</td><td>5, 0</td></tr><tr><td>주말</td><td>주중 미구매자</td></tr></tbody></table>
+			<br>
+			<h2>가격은?</h2>
+			<p>개당 1,500원 입니다. (1주일에 2개까지 구매가능)</p>
+			<br>
+			<h2>대리 구매 대상은?</h2>
+			<p>장애인, 장기요양급여 수급자, <b>2010년 포함</b> 그 이후 출생한 어린이, <b>1940년 포함</b> 그 이전 출생한 어르신</p>
+			<p>* 영유아는 호흡에 장애를 줄 수 있어 마스크 미착용 권고</p>
+			<br>
+			<h2>필요 서류는?</h2>
+			<p>* 본인 신분증</p>
+			<p>대리 구매는 주민등록등본(주민번호가 모두 기재된 것), 장애인 복지카드(장애인 등록증), 장기요양환자의 경우 증명서류</p>
+			<br>
+			<p>끝으로 어려운 환경에서도 일선에서 공헌해 주시는 약사님, 우체국 종사자분, 하나로 마트 분들께 감사와 응원 드립니다.</p>
+			<br>
+			<h2>오픈소스 라이센스</h2>
+			<p><a href="/license/">확인하기</a></p>
+			<br>
+			<h2>개발자에 문의하기</h2>
+			<p><a href="https://docs.google.com/forms/d/e/1FAIpQLSf0tnYWEV_3isDW87uY4wBWWy27e5Hog8y23Ta7oy4aQdMJ9A/viewform?usp=sf_link" target="_blank">문의하기</a></p>
+		</div>
+	</div>
+	<script src="./autocomplete.min.js"></script>
+	<script>
+		var isIE=false;
+		var agent = navigator.userAgent.toLowerCase();
+		if ( (navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent.indexOf("msie") != -1)) {
+		    isIE=true;
+		}
+		var list;
+		(function () {
+			list = JSON.parse('["서울특별시 종로구","서울특별시 중구","서울특별시 용산구","서울특별시 성동구","서울특별시 광진구","서울특별시 동대문구","서울특별시 중랑구","서울특별시 성북구","서울특별시 강북구","서울특별시 도봉구","서울특별시 노원구","서울특별시 은평구","서울특별시 서대문구","서울특별시 마포구","서울특별시 양천구","서울특별시 강서구","서울특별시 구로구","서울특별시 금천구","서울특별시 영등포구","서울특별시 동작구","서울특별시 관악구","서울특별시 서초구","서울특별시 강남구","서울특별시 송파구","서울특별시 강동구",			 "울산광역시 중구","울산광역시 남구","울산광역시 동구","울산광역시 북구","울산광역시 울주군","경기도 가평군","경기도 고양시","경기도 과천시","경기도 광명시","경기도 광주시","경기도 구리시","경기도 군포시","경기도 김포시","경기도 남양주시","경기도 동두천시","경기도 부천시","경기도 성남시 수정구","경기도 성남시 중원구","경기도 성남시 분당구","경기도 수원시","경기도 시흥시","경기도 안산시","경기도 안성시","경기도 안양시","경기도 양주시","경기도 양평군","경기도 여주시","경기도 연천군","경기도 오산시","경기도 용인시","경기도 의왕시","경기도 의정부시","경기도 이천시","경기도 파주시","경기도 평택시","경기도 포천시","경기도 하남시","경기도 화성시","강원도 원주시","강원도 춘천시","강원도 강릉시","강원도 동해시","강원도 속초시","강원도 삼척시","강원도 홍천군","강원도 태백시","강원도 철원군","강원도 횡성군","강원도 평창군","강원도 영월군","강원도 정선군","강원도 인제군","강원도 고성군","강원도 양양군","강원도 화천군","강원도 양구군", "인천광역시 중구","인천광역시 동구","인천광역시 미추홀구","인천광역시 연수구","인천광역시 남동구","인천광역시 부평구","인천광역시 계양구","인천광역시 서구","인천광역시 강화군","인천광역시 옹진군","대구광역시 중구","대구광역시 동구","대구광역시 서구","대구광역시 남구","대구광역시 북구","대구광역시 수성구","대구광역시 달서구","대구광역시 달성군", "부산광역시 중구","부산광역시 서구","부산광역시 동구","부산광역시 영도구","부산광역시 부산진구","부산광역시 동래구","부산광역시 남구","부산광역시 북구","부산광역시 강서구","부산광역시 해운대구","부산광역시 사하구","부산광역시 금정구","부산광역시 연제구","부산광역시 수영구","부산광역시 사상구","부산광역시 기장군", "광주광역시 동구","광주광역시 서구","광주광역시 남구","광주광역시 북구","광주광역시 광산구","대전광역시 동구","대전광역시 중구","대전광역시 서구","대전광역시 유성구","대전광역시 대덕구", "충청북도 청주시","충청북도 충주시","충청북도 제천시","충청북도 보은군","충청북도 옥천군","충청북도 영동군","충청북도 증평군","충청북도 진천군","충청북도 괴산군","충청북도 음성군","충청북도 단양군","충청남도 천안시","충청남도 공주시","충청남도 보령시","충청남도 아산시","충청남도 서산시","충청남도 논산시","충청남도 계룡시","충청남도 당진시","충청남도 금산군","충청남도 부여군","충청남도 서천군","충청남도 청양군","충청남도 홍성군","충청남도 예산군","충청남도 태안군","경상북도 포항시","경상북도 경주시","경상북도 김천시","경상북도 안동시","경상북도 구미시","경상북도 영주시","경상북도 영천시","경상북도 상주시","경상북도 문경시","경상북도 경산시","경상북도 군위군","경상북도 의성군","경상북도 청송군","경상북도 영양군","경상북도 영덕군","경상북도 청도군","경상북도 고령군","경상북도 성주군","경상북도 칠곡군","경상북도 예천군","경상북도 봉화군","경상북도 울진군","경상북도 울릉군","경상남도 창원시","경상남도 김해시","경상남도 진주시","경상남도 양산시","경상남도 거제시","경상남도 통영시","경상남도 사천시","경상남도 밀양시","경상남도 함안군","경상남도 거창군","경상남도 창녕군","경상남도 고성군","경상남도 하동군","경상남도 합천군","경상남도 남해군","경상남도 함양군","경상남도 산청군","경상남도 의령군","전라북도 전주시","전라북도 익산시","전라북도 군산시","전라북도 정읍시","전라북도 완주군","전라북도 김제시","전라북도 남원시","전라북도 고창군","전라북도 부안군","전라북도 임실군","전라북도 순창군","전라북도 진안군","전라북도 장수군","전라북도 무주군","전라남도 여수시","전라남도 순천시","전라남도 목포시","전라남도 광양시","전라남도 나주시","전라남도 무안군","전라남도 해남군","전라남도 고흥군","전라남도 화순군","전라남도 영암군","전라남도 영광군","전라남도 완도군","전라남도 담양군","전라남도 장성군","전라남도 보성군","전라남도 신안군","전라남도 장흥군","전라남도 강진군","전라남도 함평군","전라남도 진도군","전라남도 곡성군","전라남도 구례군","제주특별자치도 제주시","제주특별자치도 서귀포시","세종특별자치시"]');
+			new AutoComplete(document.querySelector('#address'), list);
+		})();
+		function _click(addr){
+			if(isIE){
+				window.location.href="./addr.html?addr="+encodeURIComponent(addr);
+			}else{
+				window.location.href="./addr.html?addr="+addr;
+			}
+		}
+		function _Search(){
+			for (var i = 0; i < list.length; i++) {
+				var a=list[i].indexOf(document.getElementById('address').value)
+				if(a!=-1){
+					_click(list[i]);
+				}
+			}
+		}
+	</script>
+</body>
+</html>
