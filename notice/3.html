@@ -3,12 +3,12 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
-	<title>공적 마스크 현황 : 공지사항</title>
+	<title>공적 마스크 현황 : API 변경으로 재고 표시오류 수정</title>
 	<meta name="description" content="">
-	<meta property="og:url" content="https://0mask.ncov-korea.com/notice/" >
+	<meta property="og:url" content="https://0mask.ncov-korea.com/notice/3.html" >
 	<meta property="og:site_name" content="공적 마스크 현황" >
-	<meta property="og:description" content="공적 마스크 현황을 보여줍니다.">
-	<meta property="og:title" content="공적 마스크 현황">
+	<meta property="og:description" content="API 변경으로 재고 표시오류 수정되었습니다.">
+	<meta property="og:title" content="API 변경으로 재고 표시오류 수정">
 	<meta property="og:image" content="/img/mask.png"/>
 	<meta property="og:type" content="website"/>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
@@ -24,9 +24,9 @@
 </script>
 <style>
 	a{text-decoration: none;color: #2196F3;}
-	ul{list-style: none;padding-left: 15px;}
-	li{margin: 15px 0}
-	.date{color: #666;font-size: 14px;}
+	.content > p{margin-left: 5px;}
+	.date{color: #666;display: inline-block;}
+	.category{display: inline-block;}
 </style>
 </head>
 <body>
@@ -35,12 +35,13 @@
 	</div>
 	<div class="wrap">
 		<div class="content">
-			<h2>공지사항</h2>
-			<ul>
-				<li><a href="./3.html"><span class="date">2020-03-13 13:47</span> API 변경으로 재고 표시오류 수정</a></li>
-				<li><a href="./2.html"><span class="date">2020-03-12 23:22</span> 누락되었던 몇몇 약국들이 수정되었습니다.</a></li>
-				<li><a href="./1.html"><span class="date">2020-03-12 23:02</span> 누락되었던 인천 미추홀구, 경기 성남시, 세종시가 수정되었습니다.</a></li>
-			</ul>
+			<h2>API 변경으로 재고 표시오류 수정</h2>
+			<p class="category">카테고리 <a href="./">공지사항</a></p>
+			<p class="date">2020-03-13 13:47</p>
+			<p>API 제공자인 심평원‧정보화진흥원(공공데이터포털)에서 추가로 데이터 처리부분이 생겨 오류발생.</p>
+			<p>수정되었습니다.</p>
+			<br>
+			<p>* API란? 서비스 제공자(앱,사이트)가 이용할수있는 데이터를 Json(표와 같이 일정한 규격)으로 정보를 전달하는 매개역할자</p>
 		</div>
 	</div>
 </body>
