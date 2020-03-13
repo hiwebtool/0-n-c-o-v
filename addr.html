@@ -24,7 +24,10 @@
 	  gtag('config', 'UA-136150577-4');
 	</script>
 	<style>
-		#alertMsg{width: 300px;min-height: 150px;}#alertMsg .xbtn{float: right;color: #fff;cursor: pointer;padding: 5px 10px;background-color: #E53935;}#alertMsg{position: fixed;background-color: #fff;border: 3px solid #607D8B;border-radius: 10px;padding: 10px;}#alertMsg h2{margin: 2px 10px;}#alertMsg span{color:#000;}#alertMsg .d{color: #F44336;font-weight: bold;margin: 20px 0;}#info_{padding: 5px 14px;}#info_ p{margin: 10px 0;}
+		#alertMsg{width: 300px;min-height: 150px;}#alertMsg .xbtn{float: right;color: #fff;cursor: pointer;padding: 5px 10px;background-color: #E53935;}#alertMsg{position: fixed;background-color: #fff;border: 3px solid #607D8B;border-radius: 10px;padding: 10px;}#alertMsg h2{margin: 2px 10px;}#alertMsg span{color:#000;}#alertMsg .d{color: #F44336;font-weight: bold;margin: 20px 0;}#info_{padding: 5px 14px;}#info_ p{margin: 10px 0;}#info_map{height: 300px;}
+		@media (min-width:768px) {
+		    #alertMsg{width: 640px;min-height: 150px;}
+		}
 	.notice{text-align: center;padding: 5px;margin: 0;background-color: #fff;color: #000;font-size: 16px;font-weight: normal;}
 	.notice a{text-decoration: none;color: #000}
 	.notice table{margin: auto;}
@@ -34,7 +37,7 @@
 <body>
 	<div class="header">
 		<a href="./index.html"><h1>공적 마스크 현황</h1></a>
-		<div class="notice"><table><tbody><tr><th>알림</th><td><a href="./notice/">누락되었던 인천 미추홀구, 경기 성남시, 세종시가 수정되었습니다.</a></td></tr></tbody></table></div>
+		<div class="notice"><table><tbody><tr><th>알림</th><td><a href="./notice/">지도가 추가되었습니다.</a></td></tr></tbody></table></div>
 	</div>
 	<div class="wrap">
 		<div class="content">
@@ -59,12 +62,15 @@
 			<div id="result"></div>
 		</div>
 	</div>
-	<div id="alertMsg" style="display: none;"><span class="xbtn" title="닫기" onclick="document.getElementById('alertMsg').style.display='none';">X</span><h2 id="title_"></h2><div id="info_"></div></div>
+	<div id="alertMsg" style="display: none;"><span class="xbtn" title="닫기" onclick="document.getElementById('alertMsg').style.display='none';">X</span><h2 id="title_"></h2><div id="info_map"></div><div id="info_"></div></div>
 	<script src="./autocomplete.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0741529d77726b0848a52d1191d91b61"></script>
 	<script>
 		var isIE=false;
+		var AtFirst=true;
+		var mapContainer,map,mapTypeControl,zoomControl;
 		(function () {
 			var agent = navigator.userAgent.toLowerCase();
 			if ( (navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent.indexOf("msie") != -1)) {
@@ -85,7 +91,7 @@
 			            //<th>업데이트</th><th>유형</th>
 			            for(var i=0;i<json.stores.length;i++){
 			            	if(json.stores[i].remain_stat!=null){
-			            		t+='<tr><td onclick="ShowData('+i+')" style="cursor:pointer;font-family: \'nanumgothic\';font-size: 15px;line-height: 1.5em;padding: 8px 2px;">'+json.stores[i].name+'</td><td title="지도열기 (카카오 맵)" style="cursor:pointer;font-family: \'nanumgothic\';font-size: 15px;line-height: 1.5em;" onclick="openMap(\''+json.stores[i].addr+'\',\''+json.stores[i].name+'\')"><i class="xi-maker-drop"></i>'+itemaddr(json.stores[i].addr,addrs)+'</td><td>'+leftitem(json.stores[i].remain_stat)+'</td><td>'+formatDate(json.stores[i].stock_at)+'</td></tr>';
+			            		t+='<tr><td onclick="ShowData('+i+')" style="cursor:pointer;font-family: \'nanumgothic\';font-size: 15px;line-height: 1.5em;padding: 8px 2px;">'+json.stores[i].name+'</td><td onclick="ShowData('+i+')" style="cursor:pointer;font-family: \'nanumgothic\';font-size: 15px;line-height: 1.5em;" onclick="openMap(\''+json.stores[i].addr+'\',\''+json.stores[i].name+'\')"><i class="xi-maker-drop"></i>'+itemaddr(json.stores[i].addr,addrs)+'</td><td>'+leftitem(json.stores[i].remain_stat)+'</td><td>'+formatDate(json.stores[i].stock_at)+'</td></tr>';
 			            		//<td>'+formatDate(json.stores[i].created_at)+'</td><td>'+itemtype(json.stores[i].type)+'</td>
 			            	}
 			            }
@@ -136,10 +142,10 @@
 					return "<span><span style='font-size: 0;'>3</span><span style='color:#9e9e9e'>■</span> -</span>";
 					break;
 				case 'break':
-					return "<span><span style='font-size: 0;'>2</span><span style='font-size: 0;'>■</span> x</span>";
+					return "<span><span style='font-size: 0;'>2</span>x</span>";
 					break;
 				default:
-					return "<span><span style='font-size: 0;'>1</span><span style='font-size: 0;'>■</span> ?</span>";
+					return "<span><span style='font-size: 0;'>1</span>?</span>";
 					break;
 					break;
 			}
@@ -156,6 +162,7 @@
 					return "농협";
 					break;
 				default:
+					return "알수없음";
 					break;
 			}
 		}
@@ -171,7 +178,7 @@
 			return addr.split(addrs).join("");
 		}
 		function openMap(q,r){
-			window.open("https://map.kakao.com/?map_type=TYPE_MAP&q="+encodeURIComponent(q.split("(")[0]+r),"_blank");
+			window.open("https://map.kakao.com/?q="+encodeURIComponent(q.split("(")[0]+r),"_blank");
 		}
 		function formatDate(date) {
 		    var d = new Date(date),
@@ -188,11 +195,51 @@
 		}
 		function ShowData(i){
 			document.getElementById('alertMsg').style.display='';
-		    document.getElementById('alertMsg').style.left=(window.innerWidth-326)/2+"px";
-		    document.getElementById('alertMsg').style.top=(window.innerHeight-150)/2+"px";
+			if(AtFirst){
+				AtFirst=false;
+				mapContainer = document.getElementById('info_map'), // 지도를 표시할 div 
+				    mapOption = { 
+				        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+				        level: 3 // 지도의 확대 레벨
+				    };
+
+				map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+				// 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+				mapTypeControl = new kakao.maps.MapTypeControl();
+
+				// 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+				// kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+				map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+				// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+				zoomControl = new kakao.maps.ZoomControl();
+				map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+			}
+			if(window.innerWidth>767){
+				document.getElementById('alertMsg').style.left=(window.innerWidth-666)/2+"px";
+			}else{
+				document.getElementById('alertMsg').style.left=(window.innerWidth-326)/2+"px";
+			}
+		    document.getElementById('alertMsg').style.top=(window.innerHeight-510)/2+"px";
+
+		    setTimeout(function(){
+		    	map.relayout();
+			    map.setCenter(new kakao.maps.LatLng(json.stores[i].lat, json.stores[i].lng));
+
+				var markerPosition  = new kakao.maps.LatLng(json.stores[i].lat, json.stores[i].lng); 
+				// 마커를 생성합니다
+				var marker = new kakao.maps.Marker({
+				    position: markerPosition
+				});
+
+				marker.setMap(map);
+				setTimeout(function(){map.relayout();},0);
+		    },0);
+
 			document.getElementById('title_').innerText=json.stores[i].name;
 			//<td><i class="xi-maker-drop"></i>'
-			document.getElementById('info_').innerHTML="<p><i class='xi-maker-drop' title='지도열기 (카카오 맵)' style='cursor:pointer;' onclick=\"openMap(\'"+json.stores[i].addr+'\',\''+json.stores[i].name+"\')\"></i>"+json.stores[i].addr+"</p>"+"<p>최근 업데이트 : "+formatDate(json.stores[i].created_at)+"</p>"+"<p>남은 수량 : "+leftitem(json.stores[i].remain_stat)+"</p>"+"<p>입고 시간 : "+formatDate(json.stores[i].stock_at)+"</p>";
+			document.getElementById('info_').innerHTML="<p title='지도열기 (카카오 맵)' style='cursor:pointer;color:#3f51b5' onclick=\"openMap(\'"+json.stores[i].addr+'\',\''+json.stores[i].name+"\')\"><i class='xi-maker-drop'></i>"+json.stores[i].addr+"</p>"+"<p>최근 업데이트 : "+formatDate(json.stores[i].created_at)+"</p>"+"<p>남은 수량 : "+leftitem(json.stores[i].remain_stat)+"</p>"+"<p>입고 시간 : "+formatDate(json.stores[i].stock_at)+"</p>";
 		}
 	</script>
 </body>
