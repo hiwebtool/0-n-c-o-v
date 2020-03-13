@@ -32,6 +32,11 @@
 	.notice a{text-decoration: none;color: #000}
 	.notice table{margin: auto;}
 	.notice th{padding-right: 10px;min-width: 30px;}
+	.customoverlay {position:relative;bottom:85px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;}
+.customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
+.customoverlay a {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: #d95050;background: #d95050 url(http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
+.customoverlay .title {display:block;text-align:center;background:#fff;margin-right:35px;padding:10px 15px;font-size:14px;font-weight:bold;}
+.customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
 </style>
 </head>
 <body>
@@ -66,7 +71,7 @@
 	<script src="./autocomplete.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0741529d77726b0848a52d1191d91b61"></script>
+	<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=0741529d77726b0848a52d1191d91b61"></script>
 	<script>
 		var isIE=false;
 		var AtFirst=true;
@@ -147,7 +152,6 @@
 				default:
 					return "<span><span style='font-size: 0;'>1</span>?</span>";
 					break;
-					break;
 			}
 		}
 		function itemtype(item){
@@ -205,16 +209,9 @@
 
 				map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-				// 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
-				mapTypeControl = new kakao.maps.MapTypeControl();
-
-				// 지도에 컨트롤을 추가해야 지도위에 표시됩니다
-				// kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
-				map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
-
 				// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
 				zoomControl = new kakao.maps.ZoomControl();
-				map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+				map.addControl(zoomControl, kakao.maps.ControlPosition.TOPRIGHT);
 			}
 			if(window.innerWidth>767){
 				document.getElementById('alertMsg').style.left=(window.innerWidth-666)/2+"px";
@@ -234,11 +231,11 @@
 				});
 
 				marker.setMap(map);
+
 				setTimeout(function(){map.relayout();},0);
 		    },0);
 
 			document.getElementById('title_').innerText=json.stores[i].name;
-			//<td><i class="xi-maker-drop"></i>'
 			document.getElementById('info_').innerHTML="<p title='지도열기 (카카오 맵)' style='cursor:pointer;color:#3f51b5' onclick=\"openMap(\'"+json.stores[i].addr+'\',\''+json.stores[i].name+"\')\"><i class='xi-maker-drop'></i>"+json.stores[i].addr+"</p>"+"<p>최근 업데이트 : "+formatDate(json.stores[i].created_at)+"</p>"+"<p>남은 수량 : "+leftitem(json.stores[i].remain_stat)+"</p>"+"<p>입고 시간 : "+formatDate(json.stores[i].stock_at)+"</p>";
 		}
 	</script>
