@@ -257,7 +257,12 @@
 	<priority>0.8</priority>
 </url>
 <url>
-	<loc><![CDATA[https://0mask.ncov-korea.com/addr.html?addr=경기도 안양시]]></loc>
+	<loc><![CDATA[https://0mask.ncov-korea.com/addr.html?addr=경기도 안양시 만안구]]></loc>
+	<lastmod>2020-03-13T07:53:15+09:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc><![CDATA[https://0mask.ncov-korea.com/addr.html?addr=경기도 안양시 동안구]]></loc>
 	<lastmod>2020-03-13T07:53:15+09:00</lastmod>
 	<priority>0.8</priority>
 </url>
