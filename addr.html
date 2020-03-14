@@ -75,7 +75,7 @@
 	<script>
 		var isIE=false;
 		var AtFirst=true;
-		var mapContainer,map,mapTypeControl,zoomControl,list;
+		var mapContainer,map,mapTypeControl,zoomControl,list,marker;
 		(function () {
 			var agent = navigator.userAgent.toLowerCase();
 			if ( (navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent.indexOf("msie") != -1)) {
@@ -177,6 +177,7 @@
 		}
 		function ShowData(i){
 			document.getElementById('alertMsg').style.display='';
+			if(typeof(marker)=="object"){marker.setMap(null);}
 			if(AtFirst){
 				AtFirst=false;
 				mapContainer = document.getElementById('info_map'), // 지도를 표시할 div 
@@ -197,17 +198,16 @@
 				document.getElementById('alertMsg').style.left=(window.innerWidth-326)/2+"px";
 			}
 		    document.getElementById('alertMsg').style.top=(window.innerHeight-510)/2+"px";
-
+			    
 		    setTimeout(function(){
 		    	map.relayout();
 			    map.setCenter(new kakao.maps.LatLng(json.stores[i].lat, json.stores[i].lng));
 
 				var markerPosition  = new kakao.maps.LatLng(json.stores[i].lat, json.stores[i].lng); 
 				// 마커를 생성합니다
-				var marker = new kakao.maps.Marker({
+				marker = new kakao.maps.Marker({
 				    position: markerPosition
 				});
-
 				marker.setMap(map);
 
 				setTimeout(function(){map.relayout();},0);
