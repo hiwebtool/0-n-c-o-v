@@ -32,11 +32,8 @@
 	.notice a{text-decoration: none;color: #000}
 	.notice table{margin: auto;}
 	.notice th{padding-right: 10px;min-width: 30px;}
-	.customoverlay {position:relative;bottom:85px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;}
-.customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
-.customoverlay a {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: #d95050;background: #d95050 url(http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
-.customoverlay .title {display:block;text-align:center;background:#fff;margin-right:35px;padding:10px 15px;font-size:14px;font-weight:bold;}
-.customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+	b{color: #009688}
+	.tips{color: #fff;background-color: #3F51B5;padding: 2px 5px;}
 </style>
 </head>
 <body>
@@ -58,8 +55,9 @@
 			<h2>검색 결과 : <span id="s_addr"></span></h2>
 			<p>* 5 ~ 10분 정도의 업데이트 지연이 있을수있습니다. (검색 가능시간대 08시 ~ 23시)</p>
 			<p>* 데이터 출처 : 심평원‧정보화진흥원(공공데이터포털)</p>
-			<p><span style="color: #fff;background-color: #3F51B5;padding: 2px 5px;">Tip.</span> 입고시간을 잘 활용해보세요 표의 상단 클릭시 정렬을 바꿀수있습니다.</p>
-			<p><span style="color: #fff;background-color: #3F51B5;padding: 2px 5px;">Tip.</span> 이름 클릭시 더 자세한 정보를 알수있습니다 !</p>
+			<p><span class="tips">Tip.</span> 입고시간을 잘 활용해보세요 표의 상단 클릭시 정렬을 바꿀수있습니다.</p>
+			<p><span class="tips">Tip.</span> 이름 클릭시 더 자세한 정보를 알수있습니다 !</p>
+			<p><span class="tips">Tip.</span> <span style='color:#009688'>주소의 ■색상</span>은 휴일지킴이약국(공휴일 영업) 약국을 의미합니다.</p>
 			<br>
 			<div id="loading">
 				<span class="xi-spinner-3 xi-3x xi-spin" style="vertical-align: middle;margin-right: 20px;"></span><span>잠시만 기다려주세요 . . .</span>
@@ -110,6 +108,21 @@
 					    });
 					    table.column( '2:visible' ).order( 'desc' ).draw();
 					    document.getElementById('loading').style.display="none";
+					    if(new Date().getDay()==0){
+						    xhr.open("GET" ,'./api/'+ location.search.split("?addr=")[1].split("&")[0]+".json");
+						    xhr.onreadystatechange = function() {
+						        if(xhr.readyState == 4){
+						            if(xhr.status == 200){
+							            json2=JSON.parse(xhr.responseText);
+							            for(var j=0;j<json2.data.length;j++){
+							            	var a=itemaddr(json2.data[j].addr,addrs);
+							            	document.getElementById('sortable').innerHTML=document.getElementById('sortable').innerHTML.split(a).join("<b>"+a+"</b>");
+							            }
+							        }
+						        }
+						    }
+						    xhr.send();
+						}
 			        }else{
 			            alert("데이터를 불러오는데 실패했습니다.. 공공데이터포털에 이상이 있는 것 같습니다.\n새로고침 해보시길바랍니다.");
 			        }
