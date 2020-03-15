@@ -90,7 +90,7 @@
 			            for(var i=0;i<json.stores.length;i++){
 			            	if(json.stores[i].remain_stat!=null){
 			            		var a=itemaddr(json.stores[i].addr,addrs);
-			            		t+='<tr class="'+a.split("(")[0].split(" ", 3).join("")+'"><td onclick="ShowData('+i+')" class="name_p" style="padding: 8px 2px">'+json.stores[i].name+'</td><td onclick="ShowData('+i+')" style="cursor:pointer;font-family: \'nanumgothic\';font-size: 15px;line-height: 1.5em;" onclick="openMap(\''+json.stores[i].addr+'\',\''+json.stores[i].name+'\')"><i class="xi-maker-drop"></i>'+a+'</td><td>'+leftitem(json.stores[i].remain_stat)+'</td><td>'+formatDate(json.stores[i].stock_at)+'</td></tr>';
+			            		t+='<tr class="'+a.split("(")[0].split(",")[0].split(" ", 3).join("")+'"><td onclick="ShowData('+i+')" class="name_p" style="padding: 8px 2px">'+json.stores[i].name+'</td><td onclick="ShowData('+i+')" style="cursor:pointer;font-family: \'nanumgothic\';font-size: 15px;line-height: 1.5em;" onclick="openMap(\''+json.stores[i].addr+'\',\''+json.stores[i].name+'\')"><i class="xi-maker-drop"></i>'+a+'</td><td>'+leftitem(json.stores[i].remain_stat)+'</td><td>'+formatDate(json.stores[i].stock_at)+'</td></tr>';
 			            	}
 			            }
 			            t+="</tbody></table>";
