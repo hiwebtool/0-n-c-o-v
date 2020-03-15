@@ -90,7 +90,7 @@
 			            for(var i=0;i<json.stores.length;i++){
 			            	if(json.stores[i].remain_stat!=null){
 			            		var a=itemaddr(json.stores[i].addr,addrs);
-			            		t+='<tr class="'+a.split("(")[0].split(" ").join("")+'"><td onclick="ShowData('+i+')" class="name_p" style="padding: 8px 2px">'+json.stores[i].name+'</td><td onclick="ShowData('+i+')" style="cursor:pointer;font-family: \'nanumgothic\';font-size: 15px;line-height: 1.5em;" onclick="openMap(\''+json.stores[i].addr+'\',\''+json.stores[i].name+'\')"><i class="xi-maker-drop"></i>'+a+'</td><td>'+leftitem(json.stores[i].remain_stat)+'</td><td>'+formatDate(json.stores[i].stock_at)+'</td></tr>';
+			            		t+='<tr class="'+a.split("(")[0].split(" ", 3).join("")+'"><td onclick="ShowData('+i+')" class="name_p" style="padding: 8px 2px">'+json.stores[i].name+'</td><td onclick="ShowData('+i+')" style="cursor:pointer;font-family: \'nanumgothic\';font-size: 15px;line-height: 1.5em;" onclick="openMap(\''+json.stores[i].addr+'\',\''+json.stores[i].name+'\')"><i class="xi-maker-drop"></i>'+a+'</td><td>'+leftitem(json.stores[i].remain_stat)+'</td><td>'+formatDate(json.stores[i].stock_at)+'</td></tr>';
 			            	}
 			            }
 			            t+="</tbody></table>";
@@ -105,6 +105,7 @@
 							            var style = document.createElement('style');
 							            for(var j=0;j<json2.data.length;j++){
 							            	var a=itemaddr(json2.data[j].addr,addrs);
+							            	console.log(a)
 											style.innerHTML += '.'+a.split(" ").join("")+'>.name_p{color: #009688;font-weight: bold;}';
 							            }
 										document.head.appendChild(style);
