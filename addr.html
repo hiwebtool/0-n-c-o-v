@@ -220,7 +220,7 @@
 		    document.getElementById('alertMsg').style.top=(window.innerHeight-510)/2+"px";
 		}, false);
 		function noticeSave(code) {
-			if (code==undefined) {alert("알림 불가! 웹브라우저가 알림을 지원하지 않습니다.");return;}
+			if (token==undefined) {alert("알림 불가! 이 웹브라우저는 알림을 지원하지 않습니다.");return;}
 			var addremove=true;
 			var i=0;
 			for(i=0;i<pharmlist.length;i++){
