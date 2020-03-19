@@ -38,7 +38,7 @@
 </head>
 <body>
 	<div class="header">
-		<a href="./index.html"><h1>공적 마스크 현황</h1></a>
+		<h1><a href="./index.html">공적 마스크 현황</a><a href="./notification.html"><span class="xi-bell" style="position: absolute;right: 18px;top: 18px;font-size: 25px;" title="알림설정 페이지"></span></a></h1>
 		<div class="notice"><table><tbody><tr><th>알림</th><td><a href="./notice/">누락되었던 여러지역이 수정되었습니다.</a></td></tr></tbody></table></div>
 	</div>
 	<div class="wrap">
@@ -65,7 +65,7 @@
 			<div id="result"></div>
 		</div>
 	</div>
-	<div id="alertMsg" style="display: none;"><span class="xbtn" title="닫기" onclick="document.getElementById('alertMsg').style.display='none';">X</span><h2 id="title_"></h2><div id="info_map"></div><div id="info_"></div></div>
+	<div id="alertMsg" style="display: none;"><span class="xbtn" title="닫기" onclick="document.getElementById('alertMsg').style.display='none';">X</span><span class="xi-bell-o" style="float: right;font-size: 20px;padding: 5px 10px;cursor: pointer;" title="입고알림 (요일별)" id="alarm"></span><h2 id="title_"></h2><div id="info_map"></div><div id="info_"></div></div>
 	<script src="./autocomplete.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
@@ -96,8 +96,8 @@
 			            t+="</tbody></table>";
 			            document.getElementById('result').innerHTML+=t;
 			            var table;
-					    if(new Date().getDay()==0){
-						    xhr.open("GET" ,'./api/'+ location.search.split("?addr=")[1].split("&")[0]+".json");
+					    if(new Date().getDay()==0/*6*/){
+						    xhr.open("GET" ,'./api/'+ location.search.split("?addr=")[1].split("&")[0]+".json?"+formatDate2(new Date()));
 						    xhr.onreadystatechange = function() {
 						        if(xhr.readyState == 4){
 						            if(xhr.status == 200){
@@ -149,17 +149,16 @@
 			window.open("https://map.kakao.com/?q="+encodeURIComponent(q.split("(")[0]+r),"_blank");
 		}
 		function formatDate(date) {
-		    var d = new Date(date),
-		    month = '' + (d.getMonth() + 1),
-		    day = '' + d.getDate(),
-		    year = d.getFullYear(),
-		    h=d.getHours(),
-		    m=d.getMinutes();
-		    if (month.length < 2) 
-		        month = '0' + month;
-		    if (day.length < 2) 
-		        day = '0' + day;
+		    var d = new Date(date),month = '' + (d.getMonth() + 1),day = '' + d.getDate(),year = d.getFullYear(),h=d.getHours(),m=d.getMinutes();
+		    if (month.length < 2){month = '0' + month;}
+		    if (day.length < 2){day = '0' + day;}
 		    return "<span style='font-size: 0;'>"+d.getTime()+"</span>"+[month, day].join('/')+" "+h+"시"+m+"분";
+		}
+		function formatDate2(date) {
+		    var d = new Date(date),month = '' + (d.getMonth() + 1),day = '' + d.getDate(),year = d.getFullYear();
+		    if (month.length < 2){month = '0' + month;}
+		    if (day.length < 2){day = '0' + day;}
+		    return [year,month, day].join('');
 		}
 		function ShowData(i){
 			document.getElementById('alertMsg').style.display='';
@@ -184,6 +183,16 @@
 				document.getElementById('alertMsg').style.left=(window.innerWidth-326)/2+"px";
 			}
 		    document.getElementById('alertMsg').style.top=(window.innerHeight-510)/2+"px";
+			document.getElementById('alarm').className='xi-bell-o';
+			var daycode=new Date().getDay();
+			for(var j=0;j<pharmlist.length;j++){
+		    	if(pharmlist[j]==(daycode+'_'+json.stores[i].code)){
+					document.getElementById('alarm').className='xi-bell';
+		    		break;
+		    	}
+		    }
+			
+		    document.getElementById('alarm').setAttribute('onclick','noticeSave(\''+daycode+'_'+json.stores[i].code+'\')');
 			    
 		    setTimeout(function(){
 		    	map.relayout();
@@ -210,6 +219,47 @@
 			}
 		    document.getElementById('alertMsg').style.top=(window.innerHeight-510)/2+"px";
 		}, false);
+		function noticeSave(code) {
+			var addremove=true;
+			var i=0;
+			for(i=0;i<pharmlist.length;i++){
+		    	if(pharmlist[i]==code){
+					addremove=false;
+		    		break;
+		    	}
+		    }
+			var xhr = new XMLHttpRequest();
+			if(addremove){
+				xhr.open('GET','https://us-central1-mask00ncovkorea.cloudfunctions.net/app/topics?Token='+token+'&code='+code);
+			}else{
+				xhr.open('GET','https://us-central1-mask00ncovkorea.cloudfunctions.net/app/remove?Token='+token+'&code='+code);
+			}
+			xhr.onreadystatechange = function() {
+		        if(xhr.readyState == 4){
+		            if(xhr.status == 200){
+			            json2=JSON.parse(xhr.responseText);
+			            if(json2.success){
+			            	var dayname=["일",'월','화','수','목','금','토']
+			            	if(addremove){
+			            		pharmlist.push(code);
+			            		alert(dayname[new Date().getDay()]+'요일 알림이 설정되었습니다.');
+			            	}else{
+			            		pharmlist.splice(i,1);
+			            		alert(dayname[new Date().getDay()]+'요일 알림이 해제되었습니다.');
+			            	}
+			            	document.getElementById('alarm').className=(addremove?'xi-bell':'xi-bell-o');
+			            }
+			        }else{
+			            alert("데이터를 불러오는데 실패했습니다.\n잠시후 다시 시도해보시길바랍니다.");
+			        }
+		        }
+		    }
+		    xhr.send();
+		}
 	</script>
+
+<script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-messaging.js"></script>
+<script src="./msg.js"></script>
 </body>
 </html>
