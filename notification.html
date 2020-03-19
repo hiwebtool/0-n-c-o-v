@@ -139,10 +139,10 @@
 			            	var dayname=["일",'월','화','수','목','금','토']
 			            	if(addremove){
 			            		pharmlist.push(day+"_"+code);
-			            		alert(dayname[new Date().getDay()]+'요일 알림이 설정되었습니다.');
+			            		alert(dayname[day]+'요일 알림이 설정되었습니다.');
 			            	}else{
 			            		pharmlist.splice(i,1);
-			            		alert(dayname[new Date().getDay()]+'요일 알림이 해제되었습니다.');
+			            		alert(dayname[day]+'요일 알림이 해제되었습니다.');
 			            	}
 			            	document.querySelector('#code'+code+'d'+day+' i').className=(addremove?'xi-bell':'xi-bell-o');
 			            }
