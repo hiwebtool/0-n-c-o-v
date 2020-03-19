@@ -32,6 +32,7 @@
 	a{text-decoration: none;color: #3f51b5}
 </style>
 	<link rel="manifest" href="./manifest.json"/>
+	<meta name="theme-color" content="#009688">
 </head>
 <body>
 	<div class="header">
@@ -84,5 +85,28 @@
 	</div>
 	<script src="./autocomplete.min.js"></script>
 	<script src="./search.min.js?20200315"></script>
+	<script>
+		if (!('showNotification' in ServiceWorkerRegistration.prototype)) {
+    alert('Notifications aren\'t supported.');
+  }
+		if (!('Notification' in window.prototype)) {
+    alert('Notifications aren\'t supported.');
+  }
+		if (!('Notification' in window.prototype)) {
+    alert('Notifications aren\'t supported.');
+  }
+
+  // Check the current Notification permission.
+  // If its denied, it's a permanent block until the
+  // user changes the permission
+  if (Notification.permission == 'denied') {
+    alert('The user has blocked notifications.');
+  }
+
+  // Check if push messaging is supported
+  if (!('PushManager' in window)) {
+    alert('Push messaging isn\'t supported.');
+  }
+	</script>
 </body>
 </html>
