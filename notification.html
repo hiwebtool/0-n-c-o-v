@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+	<title>공적 마스크 알림</title>
+	<meta name="description" content="공적 마스크 현황 알림을 설정가능합니다.">
+	<meta property="og:url" content="https://0mask.ncov-korea.com/notification.html" >
+	<meta property="og:site_name" content="공적 마스크 현황" >
+	<meta property="og:description" content="공적 마스크 현황 알림을 설정가능합니다.">
+	<meta property="og:title" content="공적 마스크 현황 알림">
+	<meta property="og:image" content="/img/mask.png"/>
+	<meta property="og:type" content="website"/>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+	<link rel="stylesheet" href="./main.css">
+	<meta name="google-site-verification" content="gGqBF7a0TskSu6qSXgqJhv9QwM_qD1rE10nhCqY2IS0" />
+	<meta name="naver-site-verification" content="d33ac4ca5e37a65d7d58dee57ee7f8b236befe2b"/>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-136150577-4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-136150577-4');
+</script>
+<style>
+	.notice{text-align: center;padding: 5px;margin: 0;background-color: #fff;color: #000;font-size: 16px;font-weight: normal;}
+	.notice a{text-decoration: none;color: #000}
+	.notice table{margin: auto;}
+	.notice th{padding-right: 10px;min-width: 30px;}
+	a{text-decoration: none;color: #3f51b5}
+	.xi-bell-o,.xi-bell{cursor: pointer;}
+</style>
+	<link rel="manifest" href="./manifest.json"/>
+</head>
+<body>
+	<div class="header">
+		<h1><a href="./index.html">공적 마스크 현황</a><span class="xi-bell" style="position: absolute;right: 18px;top: 18px;font-size: 25px;" title="알림설정 페이지"></span></h1>
+		<div class="notice"><table><tbody><tr><th>알림</th><td><a href="./notice/">누락되었던 여러지역이 수정되었습니다.</a></td></tr></tbody></table></div>
+	</div>
+	<div class="wrap">
+		<div class="content">
+			<h2>등록된 알림</h2>
+			<p><i class="xi-bell-o"></i> : 꺼짐 / <i class="xi-bell"></i> : 켜짐</p>
+			<div id="result">
+				<p>등록된 알림이 없거나 불러올수 없습니다.</p>
+				<p>알림설정은 검색후 알림설정을 하실수있습니다.</p>
+				<p id="IEnotice" style="display: none;"><br>* 이 브라우저에서는 지원이 안되는 기능입니다. 최신 브라우저를 사용해주세요</p>
+			</div>
+		</div>
+	</div>
+	<script>var pharmlist=['1'];</script>
+	<script src="./codetoname.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-messaging.js"></script>
+	<script src="./msg.js"></script>
+	<script>
+		var timeout=3;
+		var timer;
+		(function () {
+			if(pharmlist.length==0){
+				timer=setInterval(function () {
+					if(pharmlist.length==0){
+						if(timeout){clearInterval(timer);}else{timeout--;}
+					}else{
+						clearInterval(timer);
+						timeout=true;
+						var table='<table cellpadding="10"><tbody><tr><th>이름</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th style="color: #3F51B5;">토</th><th style="color: #F44336;">일</th></tr>';
+						var arr=[];
+						var arr2=[];
+						for (var i = 0; i < pharmlist.length; i++) {
+							var a=pharmlist[i].split("_");
+							var code=a[1];
+							arr.push(code);
+						}
+						arr2=removeDuplicatesArray(arr);
+						for (var i = 0; i < arr2.length; i++) {
+							var code=arr2[i];
+							table+='<tr><td>'+codetoname[code]+'</td><td id="code'+code+'d1" onclick="noticeSave('+code+',1)"><i class="xi-bell-o"></i></td><td id="code'+code+'d2" onclick="noticeSave('+code+',2)"><i class="xi-bell-o"></i></td><td id="code'+code+'d3" onclick="noticeSave('+code+',3)"><i class="xi-bell-o"></i></td><td id="code'+code+'d4" onclick="noticeSave('+code+',4)"><i class="xi-bell-o"></i></td><td id="code'+code+'d5" onclick="noticeSave('+code+',5)"><i class="xi-bell-o"></i></td><td id="code'+code+'d6" onclick="noticeSave('+code+',6)"><i class="xi-bell-o"></i></td><td id="code'+code+'d0" onclick="noticeSave('+code+',0")"><i class="xi-bell-o"></i></td></tr>';
+						}
+						table+='</tbody></table>';
+						document.getElementById('result').innerHTML=table;
+						setTimeout(function() {
+							for (var i = 0; i < pharmlist.length; i++) {
+								var a=pharmlist[i].split("_");
+								var day=a[0];
+								var code=a[1];
+								document.querySelector('#code'+code+'d'+day+' i').className="xi-bell";
+							}
+						}, 10);
+					}
+				},1000);
+			}else{
+				document.getElementById('IEnotice').style.display="";
+			}
+		})();
+			
+		function removeDuplicatesArray(arr) {
+	        var tempArr = [];
+	        for (var i = 0; i < arr.length; i++) {
+	            if (tempArr.length == 0) {
+	                tempArr.push(arr[i]);
+	            } else {
+	                var duplicatesFlag = true;
+	                for (var j = 0; j < tempArr.length; j++) {
+	                    if (tempArr[j] == arr[i]) {
+	                        duplicatesFlag = false;
+	                        break;
+	                    }
+	                }
+	                if (duplicatesFlag) {
+	                    tempArr.push(arr[i]);
+	                }
+	            }
+	        }
+	        return tempArr;
+	    }
+	    function noticeSave(code,day) {
+	    	var addremove=true;
+			var i=0;
+			for(i=0;i<pharmlist.length;i++){
+		    	if(pharmlist[i]==(day+"_"+code)){
+					addremove=false;
+		    		break;
+		    	}
+		    }
+			var xhr = new XMLHttpRequest();
+			if(addremove){
+				xhr.open('GET','https://us-central1-mask00ncovkorea.cloudfunctions.net/app/topics?Token='+token+'&code='+day+"_"+code);
+			}else{
+				xhr.open('GET','https://us-central1-mask00ncovkorea.cloudfunctions.net/app/remove?Token='+token+'&code='+day+"_"+code);
+			}
+			xhr.onreadystatechange = function() {
+		        if(xhr.readyState == 4){
+		            if(xhr.status == 200){
+			            json2=JSON.parse(xhr.responseText);
+			            if(json2.success){
+			            	var dayname=["일",'월','화','수','목','금','토']
+			            	if(addremove){
+			            		pharmlist.push(day+"_"+code);
+			            		alert(dayname[new Date().getDay()]+'요일 알림이 설정되었습니다.');
+			            	}else{
+			            		pharmlist.splice(i,1);
+			            		alert(dayname[new Date().getDay()]+'요일 알림이 해제되었습니다.');
+			            	}
+			            	document.querySelector('#code'+code+'d'+day+' i').className=(addremove?'xi-bell':'xi-bell-o');
+			            }
+			        }else{
+			            alert("데이터를 불러오는데 실패했습니다.\n잠시후 다시 시도해보시길바랍니다.");
+			        }
+		        }
+		    }
+		    xhr.send();
+	    }
+	</script>
+</body>
+</html>
