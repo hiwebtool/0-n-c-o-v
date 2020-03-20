@@ -106,7 +106,6 @@
 							            var style = document.createElement('style');
 							            for(var j=0;j<json2.data.length;j++){
 							            	var a=itemaddr(json2.data[j].addr,addrs);
-							            	console.log(a)
 											style.innerHTML += '.'+a.split(" ").join("")+'>.name_p{color: #009688;font-weight: bold;}';
 							            }
 										document.head.appendChild(style);
