@@ -143,7 +143,7 @@
 			}
 		}
 		function itemaddr(addr,addrs){
-			return addr.split(addrs).join("");
+			return addr.split(addrs).join("").trim();
 		}
 		function openMap(q,r){
 			window.open("https://map.kakao.com/?q="+encodeURIComponent(q.split("(")[0]+r),"_blank");
