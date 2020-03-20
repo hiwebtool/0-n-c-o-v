@@ -74,7 +74,7 @@
 	<script src="./search.min.js?20200315"></script>
 	<script>
 		var AtFirst=true;
-		var mapContainer,map,mapTypeControl,zoomControl,marker;
+		var mapContainer,map,mapTypeControl,zoomControl,marker,Lat;
 		(function () {
 			var addrs=decodeURIComponent(location.search.split("?addr=")[1].split("&")[0]);
 			document.getElementById('s_addr').innerText=addrs;
@@ -185,27 +185,29 @@
 			}
 		    document.getElementById('alertMsg').style.top=(window.innerHeight-510)/2+"px";
 			document.getElementById('alarm').className='xi-bell-o';
+
 			var daycode=new Date().getDay();
-			for(var j=0;j<pharmlist.length;j++){
-		    	if(pharmlist[j]==(daycode+'_'+json.stores[i].code)){
-					document.getElementById('alarm').className='xi-bell';
-		    		break;
-		    	}
-		    }
+			try{
+				for(var j=0;j<pharmlist.length;j++){
+			    	if(pharmlist[j]==(daycode+'_'+json.stores[i].code)){
+						alert(1)
+						document.getElementById('alarm').className='xi-bell';
+			    		break;
+			    	}
+			    }
+			}catch(e){}
 			
 		    document.getElementById('alarm').setAttribute('onclick','noticeSave(\''+daycode+'_'+json.stores[i].code+'\')');
 			    
 		    setTimeout(function(){
 		    	map.relayout();
-			    map.setCenter(new kakao.maps.LatLng(json.stores[i].lat, json.stores[i].lng));
+		    	Lat = new kakao.maps.LatLng(json.stores[i].lat, json.stores[i].lng);
+			    map.setCenter(Lat);
 
-				var markerPosition  = new kakao.maps.LatLng(json.stores[i].lat, json.stores[i].lng); 
-				// 마커를 생성합니다
 				marker = new kakao.maps.Marker({
-				    position: markerPosition
+				    position: Lat
 				});
 				marker.setMap(map);
-
 				setTimeout(function(){map.relayout();},0);
 		    },0);
 
@@ -219,6 +221,8 @@
 				document.getElementById('alertMsg').style.left=(window.innerWidth-326)/2+"px";
 			}
 		    document.getElementById('alertMsg').style.top=(window.innerHeight-510)/2+"px";
+		    map.setCenter(Lat);
+			setTimeout(function(){map.relayout();},0);
 		}, false);
 		function noticeSave(code) {
 			if (token==undefined) {alert("알림 불가! 이 웹브라우저는 알림을 지원하지 않습니다.");return;}
